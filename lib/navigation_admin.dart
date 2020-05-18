@@ -7,32 +7,14 @@ import 'util.dart';
 import 'pagina_hogar.dart';
 import 'pagina_inicio.dart';
 
-class MenuLateral extends StatefulWidget{
+class MenuLateralAdmin extends StatefulWidget{
 
 
   @override
-  _MenuLateralState createState() =>_MenuLateralState();
+  _MenuLateralAdminState createState() =>_MenuLateralAdminState();
 }
 
-class _MenuLateralState extends State<MenuLateral>{
-var _email  = "";
-var _user = "";
-var _foto= "";
-initState(){
-  super.initState();
-  _obtenerLogeado();
-}
-  _obtenerLogeado() async {
-    var usuario = await FirebaseAuth.instance.currentUser();
-
-    if (usuario != null){
-      setState(() {
-        this._email = usuario.email;
-        this._user = usuario.displayName;
-        this._foto = usuario.photoUrl;
-      });
-    }
-  }
+class _MenuLateralAdminState extends State<MenuLateralAdmin>{
 
   _cerrarSession() async {
     await FirebaseAuth.instance.signOut();
@@ -40,21 +22,20 @@ initState(){
   }
   @override
   Widget build(BuildContext context){
-
     return Drawer(
       child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               child: ListTile(
-
-                title: Text("$_user",style: TextStyle(
+                title: Text("Sergio",style: TextStyle(
                   fontSize: 40
                   ),
                 ),
-                subtitle: Text("$_email"),
-                leading: CircleAvatar(backgroundImage: NetworkImage("$_foto"),),
+                subtitle: Text("_email"),
+                leading: CircleAvatar(backgroundImage: AssetImage("assets/qrbooklogo.png"),),
               ),
+             //BoxDecoration(image: DecorationImage(image: AssetImage("assets/qrbooklogo.png"),
               ),
              ListTile(
                title: Text('Inicio'),
@@ -63,14 +44,14 @@ initState(){
                },
             ),
             ListTile(
-              title: Text('Reservar'),
-              leading: Icon(Icons.book,color: Color(0xffD96E30)),
+              title: Text('Gestion de usuarios'),
+              leading: Icon(Icons.supervised_user_circle,color: Color(0xffD96E30)),
                 onTap: (){
                 }
             ),
             ListTile(
-              title: Text('Mi Qr'),
-              leading: Icon(Icons.code,color: Color(0xffD96E30)),
+              title: Text('Alquiler'),
+              leading: Icon(Icons.collections_bookmark,color: Color(0xffD96E30)),
                 onTap: (){
                 }
             ),

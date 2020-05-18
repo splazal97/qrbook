@@ -20,6 +20,7 @@ class _PaginaHogarState extends State<PaginaHogar>{
   var _email = "anonymus";
 
 
+
   initState() {
     super.initState();
     _obtenerEmailLogeado();
@@ -38,14 +39,10 @@ class _PaginaHogarState extends State<PaginaHogar>{
   build(context) => Scaffold(
       backgroundColor: Color(0xFFF2A477),
       appBar: AppBar(
-        title: Text("${_email}"),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-
-
   ),
       drawer: Drawer(child: MenuLateral()),
-
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
@@ -63,14 +60,12 @@ class _PaginaHogarState extends State<PaginaHogar>{
             default:
               return ListView.builder(
                 itemCount: snapshot.data.documents.length,
-                scrollDirection: Axis.horizontal,
                 itemBuilder:  (context, index){
                   var books = snapshot.data.documents.elementAt(index);
-                  return Container(//(ListTittle)
-                    alignment: Alignment.topCenter,
-                    child: books['imagenURL'] !=null ? Image.network(books['imagenURL'],width: 140,height: 220) : const Icon(Icons.image,size: 220),
-                    //title: Text(books['titulo']),
-                    //subtitle: Text(books['autor']),
+                  return ListTile(
+                    leading: books['imagenURL'] !=null ? Image.network(books['imagenURL'],width: 140,height: 220) : const Icon(Icons.image,size: 220),
+                    title: Text(books['titulo']),
+                    subtitle: Text(books['autor']),
                   );
                 },
               );
