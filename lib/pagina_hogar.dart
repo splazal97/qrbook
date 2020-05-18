@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:qrbook/admin_home.dart';
 import 'package:qrbook/navigation.dart';
 
 import 'util.dart';
@@ -19,10 +20,10 @@ class _PaginaHogarState extends State<PaginaHogar>{
   var _email = "anonymus";
 
 
-   initState(){
+  initState() {
     super.initState();
     _obtenerEmailLogeado();
-      }
+  }
   _obtenerEmailLogeado() async {
     var usuario = await FirebaseAuth.instance.currentUser();
 
@@ -32,24 +33,19 @@ class _PaginaHogarState extends State<PaginaHogar>{
       });
     }
   }
-  _cerrarSession() async {
-    await FirebaseAuth.instance.signOut();
-    navegarHacia(context, PaginaInicio());
-  }
+
   @override
   build(context) => Scaffold(
       backgroundColor: Color(0xFFF2A477),
       appBar: AppBar(
         title: Text("${_email}"),
         backgroundColor: Colors.transparent,
-        actions: <Widget>[
-          IconButton(
-            onPressed: _cerrarSession,
-            icon: const Icon(Icons.exit_to_app),
-          )
-        ],
-      ),
+        elevation: 0.0,
+
+
+  ),
       drawer: Drawer(child: MenuLateral()),
+
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){

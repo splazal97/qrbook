@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "433712405931",
+    "firebase_url": "https://qrbook-93c75.firebaseio.com",
+    "project_id": "qrbook-93c75",
+    "storage_bucket": "qrbook-93c75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433712405931:android:c8b28d6dee2f0e20d706ee",
+        "android_client_info": {
+          "package_name": "com.example.qrbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433712405931-4839buer495tnv368l3dhmvsocksj8qe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTytSBDrMtJUstJKCs9RhDJen3drc8WE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433712405931-4839buer495tnv368l3dhmvsocksj8qe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
