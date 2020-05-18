@@ -14,7 +14,7 @@ class _PaginaAdminHome extends State<PaginaAdminHome>{
     drawer: Drawer(child: MenuLateral(),),
     body: Container(
       child: ListTile(
-        title: Text("inicio de sesion como admin"),
+        title: Text("inicio de sesion como admingg"),
       ),
     ),
   );
