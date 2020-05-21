@@ -18,8 +18,9 @@ class _PaginaAccesoState extends State<PaginaAcceso> {
   final _controlPasswd = TextEditingController();
   var _mensajeError ="";
   var _accedido = false;
-  var _admin = "f6St2p3zn7gVUxBDA8DSh8qaqs53";
+  var _admin = "LVUACGE5V8Owf559rilA4Z60NiA2";
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  var _admisitrador = "";
 
   _loguearConEmailYPassword() async {
     setState(() {
@@ -46,7 +47,7 @@ class _PaginaAccesoState extends State<PaginaAcceso> {
 
   }
 
-  Future<String>_loguearConGoogle() async {
+  loguearConGoogle() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
@@ -56,24 +57,36 @@ class _PaginaAccesoState extends State<PaginaAcceso> {
         accessToken: googleSignInAuthentication.accessToken);
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     final FirebaseUser user = authResult.user;
-
     assert(!user.isAnonymous);
     assert(await user.getIdToken() !=null);
-    return 'signInWithGoogle succeded: $user';
+    try {
+      if (user.uid == _admin) {
+         return navegarHacia(context, PaginaAdminHome());
+      }else {
+        if (user != null) return navegarHacia(context, PaginaHogar());
+      }
+    } catch (e) {
+      setState(() {
+        _mensajeError = e.message;
+        _accedido = false;
+      });
+    }
   }
   @override
   build(context) {
     return Scaffold(
       backgroundColor:  Color(0xFFF2A477),
         body: Container (
-          margin: EdgeInsets.all(16),
+          margin: EdgeInsets.all(24.0),
+
           child: Form(
             key: _keyFormulario,
-            child: ListView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("INICIAR SESION",textAlign: TextAlign.center,style: TextStyle(fontSize: 50,color: Colors.white),),
                 new Image.asset('assets/qrbooklogo.png', width: 200.0,height: 200.0),
-                Container (
+              /*
+              Container (
                   padding: EdgeInsets.fromLTRB(0,20,0,20),
                   child: TextFormField(
                     controller: _controladorEmail,
@@ -139,6 +152,8 @@ class _PaginaAccesoState extends State<PaginaAcceso> {
                   color: Color(0xFFBF5A36),
                   shape: StadiumBorder(),
                 ),
+
+           */
                 _signInButton(),
                 _buildMensajeDeError()
               ],
@@ -151,30 +166,31 @@ class _PaginaAccesoState extends State<PaginaAcceso> {
   Widget _signInButton() {
     return
       Container(
-        padding: EdgeInsets.fromLTRB(0,15,0,0),
+        padding: EdgeInsets.fromLTRB(0,40,0,0),
 
-        child: OutlineButton(
+        child: FlatButton(
           splashColor: Colors.grey,
+          color: Colors.white,
+          //color: Color(0xFFBF5A36),
           onPressed: () {
-            _loguearConGoogle().whenComplete(() => navegarHacia(context, PaginaHogar()));
+            loguearConGoogle();
           },
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-          highlightElevation: 0,
-          borderSide: BorderSide(color: Colors.grey),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-              Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+              Image(image: AssetImage("assets/google_logo.png"), height: 50.0),
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 5),
                 child: Text(
-                'Sign in with Google',
+                'Iniciar sesion con Google',
                 style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFBF5A36),
                 ),
               ),
             )

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:qrbook/pagina_acceso.dart';
 
 import 'util.dart';
 import 'pagina_hogar.dart';
@@ -18,6 +20,8 @@ class _MenuLateralState extends State<MenuLateral>{
 var _email  = "";
 var _user = "";
 var _foto= "";
+final GoogleSignIn googleSignIn = GoogleSignIn();
+
 initState(){
   super.initState();
   _obtenerLogeado();
@@ -35,21 +39,19 @@ initState(){
   }
 
   _cerrarSession() async {
-    await FirebaseAuth.instance.signOut();
-    navegarHacia(context, PaginaInicio());
+    await googleSignIn.signOut();
+    navegarHacia(context, PaginaAcceso());
   }
   @override
   Widget build(BuildContext context){
-
     return Drawer(
       child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               child: ListTile(
-
                 title: Text("$_user",style: TextStyle(
-                  fontSize: 40
+                  fontSize: 25
                   ),
                 ),
                 subtitle: Text("$_email"),

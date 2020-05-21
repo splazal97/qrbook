@@ -43,12 +43,6 @@ class _PaginaHogarState extends State<PaginaHogar>{
         elevation: 0.0,
   ),
       drawer: Drawer(child: MenuLateral()),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (){
-          navegarHacia(context, PaginaCrear());
-        },
-      ),
       body: StreamBuilder(
         stream: Firestore.instance.collection("books").snapshots(),
         builder: (context, snapshot) {
@@ -63,8 +57,8 @@ class _PaginaHogarState extends State<PaginaHogar>{
                 itemBuilder:  (context, index){
                   var books = snapshot.data.documents.elementAt(index);
                   return ListTile(
-                    leading: books['imagenURL'] !=null ? Image.network(books['imagenURL'],width: 140,height: 220) : const Icon(Icons.image,size: 220),
-                    title: Text(books['titulo']),
+                    leading: books['imagenURL'] !=null ? Image.network(books['imagenURL']) : const Icon(Icons.image),
+                    title: Text(books['titulo'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     subtitle: Text(books['autor']),
                   );
                 },

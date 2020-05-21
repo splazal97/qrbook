@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  barcode_scan: "^1.0.0"
   flutter:
     sdk: flutter
 
@@ -29,6 +30,11 @@ dependencies:
   uuid:
   image_picker:
   google_sign_in: ^4.4.6
+  qr_mobile_vision:
+  qr:
+  qr_flutter:
+  esys_flutter_share:
+
 
 
 dev_dependencies:

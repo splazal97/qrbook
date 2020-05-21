@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:qrbook/pagina_acceso.dart';
 
 import 'util.dart';
 import 'pagina_hogar.dart';
@@ -15,10 +17,30 @@ class MenuLateralAdmin extends StatefulWidget{
 }
 
 class _MenuLateralAdminState extends State<MenuLateralAdmin>{
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  var _email  = "";
+  var _user = "";
+  var _foto= "";
+  initState(){
+    super.initState();
+    _obtenerLogeado();
 
-  _cerrarSession() async {
-    await FirebaseAuth.instance.signOut();
-    navegarHacia(context, PaginaInicio());
+  }
+  _obtenerLogeado() async {
+    var usuario = await FirebaseAuth.instance.currentUser();
+
+    if (usuario != null){
+      setState(() {
+        this._email = usuario.email;
+        this._user = usuario.displayName;
+        this._foto = usuario.photoUrl;
+      });
+    }
+  }
+
+  void _cerrarSession() async {
+    await googleSignIn.signOut();
+    navegarHacia(context, PaginaAcceso());
   }
   @override
   Widget build(BuildContext context){
@@ -28,11 +50,11 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
           children: <Widget>[
             DrawerHeader(
               child: ListTile(
-                title: Text("Sergio",style: TextStyle(
+                title: Text("Admin",style: TextStyle(
                   fontSize: 40
                   ),
                 ),
-                subtitle: Text("_email"),
+                subtitle: Text("$_email"),
                 leading: CircleAvatar(backgroundImage: AssetImage("assets/qrbooklogo.png"),),
               ),
              //BoxDecoration(image: DecorationImage(image: AssetImage("assets/qrbooklogo.png"),
