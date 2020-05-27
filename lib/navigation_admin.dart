@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:qrbook/admin_home.dart';
 import 'package:qrbook/pagina_acceso.dart';
+import 'package:qrbook/pagina_alquilar_admin.dart';
 
 import 'util.dart';
 import 'pagina_hogar.dart';
@@ -42,6 +44,15 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
     await googleSignIn.signOut();
     navegarHacia(context, PaginaAcceso());
   }
+
+  void _irInicio() async {
+    navegarHacia(context, PaginaAdminHome());
+  }
+
+  void _irAlquiler() async {
+    navegarHacia(context, PaginaAlquilarAdmin());
+  }
+
   @override
   Widget build(BuildContext context){
     return Drawer(
@@ -62,7 +73,7 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
              ListTile(
                title: Text('Inicio'),
                leading: Icon(Icons.home,color: Color(0xffD96E30)),
-               onTap: (){
+               onTap: (){_irInicio();
                },
             ),
             ListTile(
@@ -72,9 +83,9 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
                 }
             ),
             ListTile(
-              title: Text('Alquiler'),
+              title: Text('Prestamo'),
               leading: Icon(Icons.collections_bookmark,color: Color(0xffD96E30)),
-                onTap: (){
+                onTap: (){_irAlquiler();
                 }
             ),
             ListTile(

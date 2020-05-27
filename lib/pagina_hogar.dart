@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qrbook/admin_home.dart';
 import 'package:qrbook/navigation.dart';
-
+import 'package:qrbook/pagina_libro.dart';
 import 'util.dart';
 
 import 'pagina_inicio.dart';
@@ -56,10 +56,15 @@ class _PaginaHogarState extends State<PaginaHogar>{
                 itemCount: snapshot.data.documents.length,
                 itemBuilder:  (context, index){
                   var books = snapshot.data.documents.elementAt(index);
-                  return ListTile(
-                    leading: books['imagenURL'] !=null ? Image.network(books['imagenURL']) : const Icon(Icons.image),
-                    title: Text(books['titulo'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    subtitle: Text(books['autor']),
+                  return Card(
+                    child: ListTile(
+                      leading: books['imagenURL'] !=null ? Image.network(books['imagenURL']) : const Icon(Icons.image),
+                      title: Text(books['titulo'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                      subtitle: Text(books['autor']),
+                      trailing: Icon(Icons.more_vert),
+                    onTap: () => navegarHacia(context, PaginaLibro(book:books)),
+                      isThreeLine: true,
+                    ),
                   );
                 },
               );

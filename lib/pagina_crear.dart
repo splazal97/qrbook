@@ -18,41 +18,55 @@ class _PaginaCrear extends State<PaginaCrear>{
   final _controladorTitulo = TextEditingController();
   final _nombreAutor = TextEditingController();
   var _code ="";
-  var _QR = TextEditingController();
 
 
 
   var _creando = false;
   var _imagen;
-  var _imagenURL;
+  var _imagenURL="http://djdaler.com/3.png";
 
-   Future<String> _createQrDialog(BuildContext context){
+  Future<void> _createQrDialog(context) async {
+    final _context = context;
 
-    return showDialog(context: context,builder: (context){
-      return AlertDialog(
-        title: Text("ScanQR"),
-        actions: <Widget>[
-          SizedBox(
-            width: 300,
-            height: 300,
-            child: QrCamera(
-              qrCodeCallback: (_code){
-                setState(() {
-                  this._code = _code;
-                });
-              },
-            ),
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        String dialogCode = "";
+        return AlertDialog(
+          title: Text("ScanQR"),
+          content:
+          StatefulBuilder(
+              builder: (context, setDialogState) {
+                return Column(
+                  children: [
+                    Text("CODE: " + dialogCode),
+                    SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: QrCamera(
+                        qrCodeCallback: (_code) {
+                          setState(() {
+                            this._code = _code;
+                          });
+                          setDialogState(() {
+                            dialogCode = _code;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
           ),
-          MaterialButton(
-            elevation: 5.0,
-            child: Text('Cargar'),
-            onPressed: () {
-              Navigator.of(context).pop(_code);
-            },
-          )
-        ],
-      );
-    });
+          actions: [
+            RaisedButton(
+              child: Text("Ok"),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
   }
   _seleccionarImagenDeLaGaleria() async {
     var imagen = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -83,7 +97,7 @@ class _PaginaCrear extends State<PaginaCrear>{
 
     if(_imagen != null) await _subirImagenAStorage();
 
-    await Firestore.instance.collection("books").add({'imagenURL' : _imagenURL,'titulo':_controladorTitulo.text,'autor':_nombreAutor.text,'codigoQR':_QR });
+    await Firestore.instance.collection("books").add({'imagenURL' : _imagenURL,'titulo':_controladorTitulo.text,'autor':_nombreAutor.text,'codigoQR':_code,'uidUser':"" });
 
     setState(() {
       _creando = false;
@@ -116,76 +130,120 @@ class _PaginaCrear extends State<PaginaCrear>{
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: Form(
-        key: _keyFormulario,
-        child: ListView(
-          children: [
-            TextFormField(
-              controller: _controladorTitulo,
-              decoration: const InputDecoration(labelText: 'Titulo del libro'),
-              validator: (value){
-                if (value.isEmpty) return 'Por favor introduzca un titulo';
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _nombreAutor,
-              decoration: const InputDecoration(labelText: 'Nombre del autor'),
-              validator: (value){
-                if (value.isEmpty) return 'Por favor añada el nombre del autor';
-                return null;
-              },
-            ),
-            Text(
-                'AÑADIR IMAGEN'
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: _seleccionarImagenDeLaGaleria,
-                  child: _imagen == null ? const Icon(Icons.image, size: 150) : Image.file(_imagen, height: 200),
+      body:Container(
+        margin: EdgeInsets.all(24.0),
+        child: Form(
+          key: _keyFormulario,
+          child: ListView(
+            children: [
+              Container (
+                padding: EdgeInsets.fromLTRB(0,0,0,20),
+                child: TextFormField(
+                  controller: _controladorTitulo,
+                  decoration: const InputDecoration(
+                      labelText: 'Titulo del libro',
+                      labelStyle:  TextStyle(
+                        color:  Colors.black,
+                        fontSize: 20),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border:  OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.black
+                      ),
+                      borderRadius: BorderRadius.all(
+                        const Radius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                  validator: (value){
+                    if (value.isEmpty) return 'Por favor introduzca un titulo';
+                    return null;
+                  },
                 ),
-                GestureDetector(
-                  onTap: _hacerFoto,
-                  child: _imagen == null ? const Icon(Icons.camera, size: 150) : Image.file(_imagen,height: 200,),
+              ),
+              Container (
+                padding: EdgeInsets.fromLTRB(0,0,0,20),
+                child: TextFormField(
+                  controller: _nombreAutor,
+                  decoration: const InputDecoration(labelText: 'Nombre del autor',
+                    labelStyle:  TextStyle(
+                    color:  Colors.black,
+                    fontSize: 20),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border:  OutlineInputBorder(
+                    borderSide: BorderSide(
+                    color: Colors.black
+                    ),
+                    borderRadius: BorderRadius.all(
+                    const Radius.circular(10.0),
                 ),
-              ],
-            ),
-            TextFormField(
-              controller: _QR,
-              decoration: const InputDecoration(labelText: 'CodigoQR'),
-              validator: (value){
-                if (value.isEmpty) return 'Por escane QR';
-                return null;
-              },
-            ),
-            RaisedButton(
-              color: Colors.white,
-              onPressed: () {
-                _createQrDialog(context).then((onValue) {
-                  _QR = onValue as TextEditingController;
-                });
-              },
-              child: const Text('CARGAR QR'),
-            ),
-            RaisedButton(
-              color: Colors.white,
-              onPressed: _creando ? null : () async{
-                if (_keyFormulario.currentState.validate()){
-                  await _guardarLibroEnFirestore();
-                  navegarAtras(context);
-                }
-              },
-              child: const Text('CREAR'),
-            )
-
-          ]
+                ),),
+                  validator: (value){
+                    if (value.isEmpty) return 'Por favor añada el nombre del autor';
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: Text(
+                    'AÑADIR IMAGEN',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
+                ),
+              ),
+              Container (
+                padding: EdgeInsets.fromLTRB(0,20,0,20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: _seleccionarImagenDeLaGaleria,
+                      child: _imagen == null ? const Icon(Icons.image, size: 150) : Image.file(_imagen, height: 200),
+                    ),
+                    GestureDetector(
+                      onTap: _hacerFoto,
+                      child: _imagen == null ? const Icon(Icons.camera, size: 150) : Image.file(_imagen,height: 200,),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0,20,0,20),
+                child: Text("CÓDIGO ESCANEADO: "+_code,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              ),
+              Container (
+                padding: EdgeInsets.fromLTRB(0,0,0,20),
+                child: FlatButton(
+                  color: Color(0xFFBF5A36),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    _createQrDialog(context);
+                  },
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.all(15),
+                  child: const Text('CARGAR QR'),
+                ),
+              ),
+              FlatButton(
+                color: Color(0xFFBF5A36),
+                textColor: Colors.white,
+                onPressed: _creando ? null : () async{
+                  if (_keyFormulario.currentState.validate()){
+                    await _guardarLibroEnFirestore();
+                    navegarAtras(context);
+                  }
+                },
+                padding: EdgeInsets.all(15),
+                shape: StadiumBorder(),
+                child: const Text('CREAR'),
+              )
+            ]
+          ),
         ),
       ),
     );
   }
-
-
 }
 

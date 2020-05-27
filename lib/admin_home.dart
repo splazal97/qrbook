@@ -39,7 +39,8 @@ class _PaginaAdminHome extends State<PaginaAdminHome>{
           case ConnectionState.waiting:
             return const CircularProgressIndicator();
           default:
-            return ListView.builder(
+            return
+              ListView.builder(
               itemCount: snapshot.data.documents.length,
               itemBuilder:  (context, index){
                 var books = snapshot.data.documents.elementAt(index);

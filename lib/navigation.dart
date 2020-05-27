@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qrbook/pagina_acceso.dart';
+import 'package:qrbook/pagina_qr_user.dart';
 
 import 'util.dart';
 import 'pagina_hogar.dart';
@@ -34,6 +35,7 @@ initState(){
         this._email = usuario.email;
         this._user = usuario.displayName;
         this._foto = usuario.photoUrl;
+
       });
     }
   }
@@ -42,6 +44,15 @@ initState(){
     await googleSignIn.signOut();
     navegarHacia(context, PaginaAcceso());
   }
+
+  void _irInicioUser() async {
+    navegarHacia(context, PaginaHogar());
+  }
+
+  void _irQrUser() async{
+    navegarHacia(context, PaginaQrUser());
+  }
+
   @override
   Widget build(BuildContext context){
     return Drawer(
@@ -62,6 +73,7 @@ initState(){
                title: Text('Inicio'),
                leading: Icon(Icons.home,color: Color(0xffD96E30)),
                onTap: (){
+                 _irInicioUser();
                },
             ),
             ListTile(
@@ -74,6 +86,7 @@ initState(){
               title: Text('Mi Qr'),
               leading: Icon(Icons.code,color: Color(0xffD96E30)),
                 onTap: (){
+                  _irQrUser();
                 }
             ),
             ListTile(
