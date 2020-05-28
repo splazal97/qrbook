@@ -97,7 +97,7 @@ class _PaginaCrear extends State<PaginaCrear>{
 
     if(_imagen != null) await _subirImagenAStorage();
 
-    await Firestore.instance.collection("books").add({'imagenURL' : _imagenURL,'titulo':_controladorTitulo.text,'autor':_nombreAutor.text,'codigoQR':_code,'uidUser':"" });
+    await Firestore.instance.collection("books").document(_code).setData({'imagenURL' : _imagenURL,'titulo':_controladorTitulo.text,'autor':_nombreAutor.text,'uidUser':"" });
 
     setState(() {
       _creando = false;

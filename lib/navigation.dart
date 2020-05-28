@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:qrbook/PaginaMisLibros.dart';
 import 'package:qrbook/pagina_acceso.dart';
 import 'package:qrbook/pagina_qr_user.dart';
 
@@ -53,6 +54,10 @@ initState(){
     navegarHacia(context, PaginaQrUser());
   }
 
+  void _irMisLibros() async{
+    navegarHacia(context, PaginaMisLibros());
+  }
+
   @override
   Widget build(BuildContext context){
     return Drawer(
@@ -77,10 +82,11 @@ initState(){
                },
             ),
             ListTile(
-              title: Text('Reservar'),
-              leading: Icon(Icons.book,color: Color(0xffD96E30)),
-                onTap: (){
-                }
+              title: Text('Mis libros'),
+              leading: Icon(Icons.home,color: Color(0xffD96E30)),
+              onTap: (){
+                _irMisLibros();
+              },
             ),
             ListTile(
               title: Text('Mi Qr'),

@@ -49,7 +49,7 @@ class _PaginaAdminHome extends State<PaginaAdminHome>{
                     leading: books['imagenURL'] !=null ? Image.network(books['imagenURL']) : const Icon(Icons.image),
                     title: Text(books['titulo'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     subtitle: Text(books['autor']),
-                    trailing: Icon(Icons.more_vert),
+                    trailing: Icon(Icons.delete),
                     onTap: () => navegarHacia(context, PaginaLibro(book:books)),
                     isThreeLine: true,
                 ),

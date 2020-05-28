@@ -77,12 +77,6 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
                },
             ),
             ListTile(
-              title: Text('Gestion de usuarios'),
-              leading: Icon(Icons.supervised_user_circle,color: Color(0xffD96E30)),
-                onTap: (){
-                }
-            ),
-            ListTile(
               title: Text('Prestamo'),
               leading: Icon(Icons.collections_bookmark,color: Color(0xffD96E30)),
                 onTap: (){_irAlquiler();
