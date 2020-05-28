@@ -20,12 +20,12 @@ class _PaginaInicioState extends State<PaginaInicio>{
 
     var usuario = await FirebaseAuth.instance.currentUser();
 
-    if (usuario.uid.toString() == _admin){
+    if(usuario == null){
+      navegarHacia(context, PaginaAcceso());
+    } else if (usuario.uid.toString() == _admin){
       navegarHacia(context, PaginaAdminHome());
     } else if (usuario != null && usuario.uid.toString() !=_admin) {
       navegarHacia(context, PaginaHogar());
-    } else {
-      navegarHacia(context, PaginaAcceso());
     }
   }
 

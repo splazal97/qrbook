@@ -49,7 +49,23 @@ class _PaginaAdminHome extends State<PaginaAdminHome>{
                     leading: books['imagenURL'] !=null ? Image.network(books['imagenURL']) : const Icon(Icons.image),
                     title: Text(books['titulo'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     subtitle: Text(books['autor']),
-                    trailing: Icon(Icons.delete),
+                    trailing: Column(
+                      children: <Widget>[
+                        Container(
+                          child: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () async {
+                              await Firestore.instance.runTransaction((Transaction myTransaction) async {
+                                await myTransaction.delete(snapshot.data.documents[index].reference);
+                              });
+
+                            },
+                          ),
+
+                        )
+                      ],
+                    ),
+
                     onTap: () => navegarHacia(context, PaginaLibro(book:books)),
                     isThreeLine: true,
                 ),

@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qrbook/admin_home.dart';
 import 'package:qrbook/pagina_acceso.dart';
 import 'package:qrbook/pagina_alquilar_admin.dart';
+import 'package:qrbook/pagina_devolver_admin.dart';
+import 'package:qrbook/pagina_libros_prestados_admin.dart';
 
 import 'util.dart';
 import 'pagina_hogar.dart';
@@ -53,6 +55,15 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
     navegarHacia(context, PaginaAlquilarAdmin());
   }
 
+  void _irLibrosPrestados() async {
+    navegarHacia(context, PaginaLibrosPrestados());
+  }
+
+  void _irDevolver() async {
+    navegarHacia(context, PaginaDevolverLibro());
+  }
+
+
   @override
   Widget build(BuildContext context){
     return Drawer(
@@ -61,8 +72,8 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
           children: <Widget>[
             DrawerHeader(
               child: ListTile(
-                title: Text("Admin",style: TextStyle(
-                  fontSize: 40
+                title: Text("Bibliotecario",style: TextStyle(
+                  fontSize: 32
                   ),
                 ),
                 subtitle: Text("$_email"),
@@ -78,8 +89,21 @@ class _MenuLateralAdminState extends State<MenuLateralAdmin>{
             ),
             ListTile(
               title: Text('Prestamo'),
-              leading: Icon(Icons.collections_bookmark,color: Color(0xffD96E30)),
+              leading: Icon(Icons.book,color: Color(0xffD96E30)),
                 onTap: (){_irAlquiler();
+                }
+            ),
+            ListTile(
+                title: Text('Devolver'),
+                leading: Icon(Icons.keyboard_return,color: Color(0xffD96E30)),
+                onTap: (){_irDevolver();
+                }
+            ),
+
+            ListTile(
+                title: Text('Libros prestados'),
+                leading: Icon(Icons.collections_bookmark,color: Color(0xffD96E30)),
+                onTap: (){_irLibrosPrestados();
                 }
             ),
             ListTile(

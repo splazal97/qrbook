@@ -103,25 +103,6 @@ class _PaginaCrear extends State<PaginaCrear>{
       _creando = false;
     });
   }
-
-  /*_scan(BuildContext context) async {
-    // Navigator.push devuelve un Future que se completará después de que llamemos
-    // Navigator.pop en la pantalla de selección!
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => QRRead()),
-    );
-
-    // Después de que la pantalla de selección devuelva un resultado,
-    // oculta cualquier snackbar previo y muestra el nuevo resultado.
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text("$result")));
-  }
-
-   */
-
-
   @override
   build(context){
     return Scaffold(

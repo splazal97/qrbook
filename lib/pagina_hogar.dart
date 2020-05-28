@@ -61,8 +61,7 @@ class _PaginaHogarState extends State<PaginaHogar>{
                       leading: books['imagenURL'] !=null ? Image.network(books['imagenURL']) : const Icon(Icons.image),
                       title: Text(books['titulo'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                       subtitle: Text(books['autor']),
-                      trailing: Icon(Icons.more_vert),
-                    onTap: () => navegarHacia(context, PaginaLibro(book:books)),
+                      onTap: () => navegarHacia(context, PaginaLibro(book:books)),
                       isThreeLine: true,
                     ),
                   );
